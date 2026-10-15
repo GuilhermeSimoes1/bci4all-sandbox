@@ -7,7 +7,7 @@ from psychopy import visual, core, event
 # Experiment timing parameters
 FLASH_MS = 125.0
 ISI_MS = 800.0
-N_TRIALS = 30
+N_TRIALS = 100
 TARGET_PROBABILITY = 0.20
 
 # Setup LSL Marker Outlet
@@ -25,8 +25,8 @@ flash_frames = max(1, int(round((FLASH_MS / 1000.0) * refresh_rate)))
 isi_frames = max(1, int(round((ISI_MS / 1000.0) * refresh_rate)))
 
 # Visual stimuli
-fixation = visual.TextStim(win, text="+", color=(-0.3, -0.3, -0.3), height=50)
-stim = visual.TextStim(win, text="P", height=80)
+card = visual.Rect(win, width=180, height=180, lineWidth=4)
+label = visual.TextStim(win, text="+", height=80)
 
 # Arrays to record real hardware timestamps
 flash_onset_times = []
@@ -42,17 +42,30 @@ print(f"\n[BENCHMARK] Running {N_TRIALS} trials with GPU V-Sync profiling...")
 for trial in range(1, N_TRIALS + 1):
     is_target = random.random() < TARGET_PROBABILITY
     marker = 1 if is_target else 2
-    stim.color = (1.0, 0.84, 0.0) if is_target else (0.2, 0.2, 0.2)
+    
+
+    card.fillColor = (1.0, 0.84, 0.0)      
+    card.lineColor = (1.0, 1.0, 1.0)        
+    label.color = (-1.0, -1.0, -1.0)
+
+    label.text = "G" if is_target else "Z"
 
     # V-SYNC ONSET: Trigger fires on the exact monitor refresh
     win.callOnFlip(record_onset, marker)
     
     for f in range(flash_frames):
-        stim.draw()
+        card.draw()
+        label.draw()
         win.flip()
-        
+    
+    card.fillColor = (-0.7, -0.7, -0.7)      
+    card.lineColor = (-0.4, -0.4, -0.4)      
+    label.color = (-0.2, -0.2, -0.2)         
+    label.text = "+"
+
     for f in range(isi_frames):
-        fixation.draw()
+        card.draw()
+        label.draw()
         win.flip()
         
     if "escape" in event.getKeys():

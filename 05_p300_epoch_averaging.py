@@ -6,7 +6,7 @@ ELECTRODES = ["Fz", "C3", "Cz", "C4", "Pz", "PO7", "POz", "PO8"]
 
 # Function that listens to LSL triggers that are sent by the stimulus generator 
 # and emits them into gp.Marker.
-def listen_lsl(marker_node, stream_name="BCI_Triggers"):
+def listen_lsl(marker_node, stream_name="P300_Markers"):
     print(f"[LSL Bridge] Searching for stream '{stream_name}'...")
     streams = resolve_byprop("name", stream_name, timeout=10)
     if not streams:
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     base_target = gp.Baseline()
     scope_target = gp.TriggerScope(
         name="Target (1) - P300 ERP (Cz & Pz)",
-        amplitude_limit=15,
+        amplitude_limit=10,
     )
 
     # Using trigger to get the epoch that p300 is not supposed to happen (non-target)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     base_nontarget = gp.Baseline()
     scope_nontarget = gp.TriggerScope(
         name="Non-Target (2) - Baseline Noise (Cz & Pz)",
-        amplitude_limit=15,
+        amplitude_limit=10,
     )
 
     # connecting the nodes (filtering and labeling)
