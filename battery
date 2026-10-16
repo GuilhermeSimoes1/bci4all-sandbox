@@ -1,0 +1,30 @@
+import gpype as gp
+import numpy as np
+
+# Configura o BCICore para ler todos os canais (incluindo telemetria)
+amp = gp.BCICore(num_eeg_channels=17)
+p = gp.Pipeline()
+
+class BatteryReader(gp.INode):
+    def __init__(self):
+        super().__init__(name="battery_reader")
+        self.bat = None
+
+    def step(self, data):
+        samples = data.get("in")
+        if samples is not None and len(samples) > 0:
+            # Canal 15 (índice 14) é a percentagem da bateria
+            self.bat = samples[0, 14] if samples.shape[1] > 14 else samples[14, 0]
+        return {}
+
+reader = BatteryReader()
+p.connect(amp, reader)
+
+print("[BATERIA] A ligar ao Unicorn para ler a carga...")
+p.start()
+import time; time.sleep(1.5)
+p.stop()
+p.close()
+
+if reader.bat is not None:
+    print(f"\n🔋 Bateria Atual do Unicorn Core-8: {reader.bat:.1f}%\n")
