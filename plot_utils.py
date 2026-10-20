@@ -5,13 +5,13 @@ Encapsulates all Matplotlib styling, subplots, and publication-ready reporting.
 
 import matplotlib.pyplot as plt
 
-
+# show target and non-target mean +/- std
 def plot_erp_stability_panels(
     time_axis, 
     m_tgt, s_tgt, n_tgt, 
     m_nontgt, s_nontgt, n_nontgt, 
-    channel_name="PO7",
-    save_path="p300_po7_target_and_nontarget.png", 
+    channel_name="Pz",
+    save_path="p300_Pz_target_and_nontarget.png", 
     show=True
 ):
     """
@@ -55,3 +55,40 @@ def plot_erp_stability_panels(
     
     if show:
         plt.show()
+
+
+# show only the standard deviation over time for target and non-target 
+def plot_sigma_over_time(
+    time_axis, 
+    s_tgt, 
+    s_nontgt, 
+    channel_name="Pz", 
+    save_path="p300_sigma_over_time.png", 
+    show=True
+):
+    """Plots standard deviation (sigma) over time for Target and Non-Target."""
+    plt.style.use("dark_background")
+    fig, ax = plt.subplots(figsize=(10, 5))
+    
+    # Target sigma (red) and Non-Target sigma (cyan/blue)
+    ax.plot(time_axis, s_tgt, color="#FF5252", linewidth=2.5, label=f"Target σ(t) - Variabilidade Alvo")
+    ax.plot(time_axis, s_nontgt, color="#40C4FF", linewidth=2.0, linestyle="--", label=f"Non-Target σ(t) - Variabilidade Ruído")
+    
+    # Stimulus onset reference line
+    ax.axvline(0.0, color="white", linestyle=":", linewidth=1.5, alpha=0.8, label="Início do Flash (0 ms)")
+    ax.axvline(300.0, color="#FFD700", linestyle=":", linewidth=1.2, alpha=0.6, label="Janela P300 (~300 ms)")
+    
+    ax.set_title(f"Variabilidade Temporal σ(t) - Canal {channel_name}", fontsize=13, fontweight="bold", pad=12)
+    ax.set_xlabel("Tempo após estímulo (ms)", fontsize=11)
+    ax.set_ylabel("Desvio Padrão σ (µV)", fontsize=11)
+    ax.grid(True, linestyle="--", alpha=0.3)
+    ax.legend(loc="upper right", framealpha=0.3)
+    
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path, dpi=150)
+        print(f"[PLOT] Gráfico σ(t) guardado em '{save_path}'")
+    if show:
+        plt.show()
+    plt.close(fig)
+

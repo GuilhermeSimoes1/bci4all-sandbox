@@ -7,7 +7,7 @@ from psychopy import visual, core, event
 # Parameters of temporization (ms)
 FLASH_MS = 125.0
 ISI_MS = 800.0
-N_TRIALS = 100
+N_TRIALS = 150
 TARGET_PROBABILITY = 0.20  # 20% flashes no Alvo (A), 80% no Não-Alvo (B)
 
 # LSL stream configuration (sender)
@@ -16,7 +16,7 @@ outlet = StreamOutlet(info)
 
 # PsychoPy window
 win = visual.Window(size=(900, 600), color=(-1, -1, -1), units="pix", fullscr=False)
-win.recordFrameIntervals = True
+win.recordFrameIntervals = True 
 
 refresh_rate = win.getActualFrameRate() or 60.0
 flash_frames = max(1, int(round((FLASH_MS / 1000.0) * refresh_rate)))
@@ -32,7 +32,7 @@ FLASH_LINE = (1.0, 1.0, 1.0)    # White
 FLASH_TEXT = (-1.0, -1.0, -1.0)  # Black
 
 # Visual elements: Box A (Left / Target) and Box B (Right / Non-Target)
-BOX_OFFSET_X = 220
+BOX_OFFSET_X = 300
 BOX_SIZE = 180
 
 card_left = visual.Rect(win, width=BOX_SIZE, height=BOX_SIZE, pos=(-BOX_OFFSET_X, 0), lineWidth=4)
