@@ -1,8 +1,9 @@
 import random
 import time
 import numpy as np
-from pylsl import StreamInfo, StreamOutlet
+from pylsl import StreamInfo, StreamOutlet, local_clock
 from psychopy import visual, core, event
+
 
 # Parameters of temporization (ms)
 FLASH_MS = 125.0
@@ -53,8 +54,9 @@ flash_onset_times = []
 
 def record_onset(marker_val):
     """Triggered by the exact sweep of the monitor's photon gun (V-Sync)."""
-    flash_onset_times.append(time.perf_counter())
-    outlet.push_sample([marker_val])
+    t_flip = local_clock()
+    flash_onset_times.append(t_flip)
+    outlet.push_sample([marker_val], timestamp=t_flip)
 
 print(f"\n[BENCHMARK] Starting {N_TRIALS} trials in the 2-Box Paradigm...")
 print("[INSTRUÇÃO] Mantém os olhos fixos na Caixa A (Esquerda).")
