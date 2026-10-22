@@ -61,6 +61,14 @@ def record_onset(marker_val):
 print(f"\n[BENCHMARK] Starting {N_TRIALS} trials in the 2-Box Paradigm...")
 print("[INSTRUÇÃO] Mantém os olhos fixos na Caixa A (Esquerda).")
 
+# GPU WARM-UP (Pré-aquecimento de Shaders e VRAM)
+hint.draw()
+card_left.draw()
+card_right.draw()
+label_left.draw()
+label_right.draw()
+win.flip()
+
 # Main loop
 for trial in range(1, N_TRIALS + 1):
     is_target = random.random() < TARGET_PROBABILITY
