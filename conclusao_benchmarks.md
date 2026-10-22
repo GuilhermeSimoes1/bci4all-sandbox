@@ -1,0 +1,5 @@
+Estive a investigar aquela questão do atraso no display e fiz um teste ao pipeline visual do PsychoPy, usando exatamente o mesmo paradigma de 2 caixas e os tempos reais que estamos a usar.
+
+Pelo que vi, do lado visual estamos muito bem. A renderização do cenário na GPU demora, em média, apenas ~2.6 ms, o que nos dá uma margem enorme em relação ao limite de 16.6 ms de um ecrã a 60 Hz. Trabalhando em ecrã inteiro, não reparei em qualquer perda de frames e o refrescamento mostrou-se super estável. Como também estamos a usar o callOnFlip, o marcador LSL só arranca no momento exato em que a imagem efetivamente muda no ecrã (sendo que esse envio demora menos de 0.5 ms).
+
+Juntando as peças todas, a parte visual e o envio dos marcadores estão praticamente em tempo real. O único atraso real de toda a cadeia vem da transmissão Bluetooth do Unicorn, onde as amostras chegam em blocos de 16 ms. Contudo, como o jitter do Bluetooth é muito baixo (~4 ms, cerca de 1 amostra a 250 Hz), este atraso acaba por ser essencialmente constante. No pior dos casos, isto vai apenas deslocar o pico do P300 uns 20 ms para a frente, mas mantém a forma da onda intacta.
