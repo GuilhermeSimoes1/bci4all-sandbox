@@ -1,0 +1,2 @@
+Correção de Baseline: É colocar o ponto de partida no zero (usando a média dos 100 ms antes do flash) para eliminar 
+o desvio aleatório do sinal e conseguirmos medir os microvolts reais do salto do P300.
